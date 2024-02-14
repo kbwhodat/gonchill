@@ -13,7 +13,7 @@ import (
 	"gonchill/util"
 )
 
-func SearchMovies(query string) {
+func SearchMovies(query string, option string) {
 
 	encodedQuery := url.QueryEscape(query)
 
@@ -70,7 +70,7 @@ func SearchMovies(query string) {
 
 	selected_magnet := prompt.Selection(util.RemoveDuplicates(magnetLinks), "magnets")
 
-	util.Watch(selected_magnet)
+	util.Watch(selected_magnet, option)
 
 }
 
