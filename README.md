@@ -31,10 +31,10 @@ Welcome to `gonchill`! Dive into the world of instant streaming with the speed o
 
 ## How to use
 #### Series
-```gonchill series true detective```
+```gonchill series -v true detective```
 
 #### Movies
-```gonchill movies equalizer```
+```gonchill movies -v equalizer```
 
 ### License 📜
 This project is licensed under [GPL-3.0](https://raw.githubusercontent.com/Illumina/licenses/master/gpl-3.0.txt).
