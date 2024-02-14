@@ -12,7 +12,7 @@ import (
 func main() {
 
 	if len(os.Args) < 3 {
-		fmt.Println("Usage: go run main.go movies|series \"search query\"")
+		fmt.Println("Usage: movies|series \"search query\"")
 		return
 	}
 
