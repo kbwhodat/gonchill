@@ -7,12 +7,24 @@ Welcome to `gonchill`! Dive into the world of instant streaming with the speed o
 
 ## Features ✨
 - _CLI Magic_: Pure command-line bliss. Simple commands, powerful streaming.
-- _Cross-Platform Joy_: Works on Windows, Linux, and macOS. `gonchill` loves them all!
 - _Versatile_: Supports a wide range of torrent sources. If it's out there, you can stream it.
 - _Open Source_: Peek under the hood; it's all transparent and open for contributions!
 
-## How It Works 🧙
-`gonchill` utilizes the power of Go to connect to various torrent sources, fetching the best available streams in record time. It then uses peer-to-peer magic to start streaming content directly to your preferred player.
+## How to Install
+##### Arch Linux
+yay -S gonchill
+
+#### Depedencies
+- `mpv`
+- `go`
+- `peerflix`
+
+## How to use
+#### Series
+```gonchill series true detective```
+
+#### Movies
+```gonchill movies equalizer```
 
 ### License 📜
 This project is licensed under [GPL-3.0](https://raw.githubusercontent.com/Illumina/licenses/master/gpl-3.0.txt).
