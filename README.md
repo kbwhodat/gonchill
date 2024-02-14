@@ -12,7 +12,7 @@ Welcome to `gonchill`! Dive into the world of instant streaming with the speed o
 
 ## How to Install
 ##### Arch Linux
-yay -S gonchill
+```yay -S gonchill```
 
 #### Depedencies
 - `mpv`
