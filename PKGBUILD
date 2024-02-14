@@ -1,10 +1,11 @@
+pkgname='gonchill'
 pkgver=1.0.0
 pkgrel=1
 pkgdesc="A CLI tool for streaming content"
 arch=('x86_64')
-url="http://example.com/project/homepage"
+url="https://github.com/kbwhodat/gonchill"
 license=('MIT')
-depends=('glibc')
+depends=('peerflix')
 makedepends=('go' 'git')
 source=("$pkgname-$pkgver.tar.gz::https://example.com/$pkgname/$pkgver.tar.gz")
 sha256sums=('SKIP')
