@@ -7,12 +7,12 @@ url="https://github.com/kbwhodat/gonchill"
 license=('MIT')
 depends=('peerflix')
 makedepends=('go' 'git')
-source=("$pkgname-$pkgver.tar.gz::https://example.com/$pkgname/$pkgver.tar.gz")
+source=("${pkgname}-${pkgver}.tar.gz::https://github.com/kbwhodat/gonchill/archive/refs/tags/v${pkgver}.tar.gz")
 sha256sums=('SKIP')
 
 build() {
   cd "$srcdir/$pkgname-$pkgver"
-  go build -o "$pkgname"
+  go build -o "$pkgname" main.go
 }
 
 package() {
