@@ -5,7 +5,8 @@ _________________________________________________________
 
 Welcome to `gonchill`! Dive into the world of instant streaming with the speed of light. Built with ❤️ in Go, `gonchill` lets you stream your favorite content directly via torrents, without the wait. Whether it's movies, series, or shows, `gonchill` brings them to you swiftly, because who likes waiting anyway?
 
-[](images/output.gif)
+
+![](images/output.gif)
 
 ## Features ✨
 - _CLI Magic_: Pure command-line bliss. Simple commands, powerful streaming.
