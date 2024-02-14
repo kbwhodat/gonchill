@@ -69,7 +69,6 @@ func SearchSeries(query string, option string) {
 	})
 
 	selected_season := prompt.Selection(util.RemoveDuplicates(seasons), "seasons")
-	fmt.Println(transformSeason(selected_season))
 
 	var episodes []string
 	doc.Find("a[href]").Each(func(i int, s *goquery.Selection){
@@ -113,6 +112,10 @@ func transformSeason(season string) string {
 
 	lowercase := strings.ToLower(season)
 	result := strings.Replace(lowercase, " ", "-", 1)
+
+	if season == "Specials" {
+		result = "season-0"
+	}
 
 	return result
 }
