@@ -8,7 +8,7 @@ pkgbase = gonchill
 	makedepends = go
 	makedepends = git
 	depends = peerflix
-	source = gonchill-1.0.0.tar.gz::https://github.com/kbwhodat/gonchill/archive/refs/tags/v1.0.0.tar.gz
+	source = gonchill-1.0.0.tar.gz::https://github.com/kbwhodat/gonchill/releases/download/1.0.0/gonchill-1.0.0.tar.gz
 	sha256sums = SKIP
 
 pkgname = gonchill
