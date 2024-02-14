@@ -17,7 +17,7 @@ Welcome to `gonchill`! Dive into the world of instant streaming with the speed o
 #### Depedencies
 - `mpv`
 - `go`
-- `peerflix`
+- [peerflix](https://github.com/mafintosh/peerflix)
 
 ## How to use
 #### Series
