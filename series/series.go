@@ -11,15 +11,35 @@ import (
 	"github.com/PuerkitoBio/goquery"
 	"gonchill/prompt"
 	"gonchill/util"
+	"gonchill/scripts"
 )
 
 func SearchSeries(query string, option string) {
+
+  cookies, err := scripts.ReadCookies("scripts/cookies.json")
+  if err != nil {
+    log.Fatalf("Error reading cookies: %s", err)
+  }
 
 	encodedQuery := url.QueryEscape(query)
 
 	searchURL := fmt.Sprintf("https://en.rarbg-official.com/series?keyword=%s&genre=&rating=0&order_by=latest", encodedQuery)
 
-	resp, err := http.Get(searchURL)
+  client := &http.Client{}
+
+  req, err := http.NewRequest("GET", searchURL, nil)
+  if err != nil {
+    log.Fatal(err)
+  }
+
+  req.Header.Set("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36")
+
+  for _, cookie := range cookies {
+    req.AddCookie(cookie)
+  }
+
+	resp, err := client.Do(req)
+
 	if err != nil {
 		log.Fatalf("Error search for this url: %v", err)
 	}
@@ -43,9 +63,21 @@ func SearchSeries(query string, option string) {
 	})
 
 	selected_series := prompt.Selection(util.RemoveDuplicates(hold), "series")
+	
+  client = &http.Client{}
+  req, err = http.NewRequest("GET", selected_series, nil)
+  if err != nil {
+    log.Fatalf("Failed to create a New Request")
+  }
 
+  req.Header.Set("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36")
 
-	resp, err = http.Get(selected_series)
+  for _, cookie := range cookies {
+    req.AddCookie(cookie)
+  }
+
+  resp, err = client.Do(req)
+
 	if err != nil {
 		log.Fatalf("Unable to search selected series: %s", selected_series)
 	}
@@ -82,7 +114,19 @@ func SearchSeries(query string, option string) {
 
 	selected_episode := prompt.Selection(util.RemoveDuplicates(episodes), "episodes")
 
-	resp, err = http.Get(selected_episode)
+  client = &http.Client{}
+  req, err = http.NewRequest("GET", selected_episode, nil)
+  if err != nil {
+    log.Fatalf("Failed to create a New Request")
+  }
+
+  req.Header.Set("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36")
+
+  for _, cookie := range cookies {
+    req.AddCookie(cookie)
+  }
+
+  resp, err = client.Do(req)
 	if err != nil {
 		log.Fatalf("Unable to fetch episode: %v", err)
 	}

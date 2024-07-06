@@ -1,0 +1,4 @@
+requests
+websockets
+selenium
+undetected_chromedriver

@@ -11,15 +11,34 @@ import (
 	"github.com/PuerkitoBio/goquery"
 	"gonchill/prompt"
 	"gonchill/util"
+  "gonchill/scripts"
 )
 
 func SearchMovies(query string, option string) {
+
+  cookies, err := scripts.ReadCookies("scripts/cookies.json")
+  if err != nil {
+    log.Fatalf("Error reading cookies: %s", err)
+  }
 
 	encodedQuery := url.QueryEscape(query)
 
 	searchURL := fmt.Sprintf("https://en.rarbg-official.com/movies?keyword=%s&quality=&genre=&rating=0&year=0&language=&order_by=latest", encodedQuery)
 
-	resp, err := http.Get(searchURL)
+  client := &http.Client{}
+
+  req, err := http.NewRequest("GET", searchURL, nil)
+  if err != nil {
+    log.Fatal(err)
+
+  }
+  req.Header.Set("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36")
+
+  for _, cookie := range cookies {
+    req.AddCookie(cookie)
+  }
+
+	resp, err := client.Do(req)
 	if err != nil {
 		log.Fatalf("Failed to fetch data: %v", err)
 	}
@@ -47,7 +66,19 @@ func SearchMovies(query string, option string) {
 
 	selected_movie := prompt.Selection(util.RemoveDuplicates(hold), "movies")
 
-	resp, err = http.Get(selected_movie)
+  client = &http.Client{}
+  req, err = http.NewRequest("GET", selected_movie, nil)
+  if err != nil {
+    log.Fatalf("Failed to create a New Request")
+  }
+
+  req.Header.Set("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36")
+
+  for _, cookie := range cookies {
+    req.AddCookie(cookie)
+  }
+
+  resp, err = client.Do(req)
 	if err != nil {
 		log.Fatalf("Failed to reach selected movie: %s", selected_movie)
 	}
