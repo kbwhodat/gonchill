@@ -32,7 +32,7 @@ def main():
     driver = gen_driver()  # Initialize the driver using your function
     try:
         time.sleep(2)
-        location = "scripts/cookies.json"
+        location = "./scripts/cookies.json"
 
         driver.get('https://youtube.com')
         time.sleep(2)

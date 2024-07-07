@@ -16,7 +16,7 @@ import (
 
 func SearchMovies(query string, option string) {
 
-  cookies, err := scripts.ReadCookies("scripts/cookies.json")
+  cookies, err := scripts.ReadCookies("./scripts/cookies.json")
   if err != nil {
     log.Fatalf("Error reading cookies: %s", err)
   }

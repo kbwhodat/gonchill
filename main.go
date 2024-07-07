@@ -43,7 +43,7 @@ func main() {
 	option := os.Args[2]
 	query := strings.Join(os.Args[3:], " ")
 
-  _, err := os.Stat("scripts/cookies.json")
+  _, err := os.Stat("./scripts/cookies.json")
   if errors.Is(err, os.ErrNotExist) {
     log.Println("No cookies file found, generating fresh cookies...")
     executePythonTask()

@@ -69,9 +69,9 @@ func CheckCookieExpiry(cookieName string) (bool) {
     if cookie.Name == cookieName {
       expiryTime := time.Unix(cookie.Expiry, 0)
       if time.Now().Before(expiryTime) {
-        return false
-      } else {
         return true
+      } else {
+        return false
       }
     }
   }
