@@ -1,4 +1,4 @@
 requests
 websockets
-selenium
-undetected_chromedriver
+selenium-profiles
+blinker==1.7.0

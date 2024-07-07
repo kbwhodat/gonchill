@@ -45,7 +45,7 @@ func main() {
 
   _, err := os.Stat("scripts/cookies.json")
   if errors.Is(err, os.ErrNotExist) {
-    log.Println("No cookies file found, generating fresh cookies")
+    log.Println("No cookies file found, generating fresh cookies...")
     executePythonTask()
   }
   
