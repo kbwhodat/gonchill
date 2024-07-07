@@ -7,6 +7,8 @@ import (
 	"net/url"
 	"regexp"
 	"strings"
+  "path/filepath"
+
 
 	"github.com/PuerkitoBio/goquery"
 	"gonchill/prompt"
@@ -16,7 +18,8 @@ import (
 
 func SearchSeries(query string, option string) {
 
-  cookies, err := scripts.ReadCookies("./scripts/cookies.json")
+  cookiesFilePath := filepath.Join("/tmp", "cookies.json")
+  cookies, err := scripts.ReadCookies(cookiesFilePath)
   if err != nil {
     log.Fatalf("Error reading cookies: %s", err)
   }

@@ -49,7 +49,7 @@ func ReadCookies(filePath string) ([]*http.Cookie, error) {
 
 func readCookiesFromFile() ([]Cookie, error) {
     var cookies []Cookie
-    data, err := ioutil.ReadFile("scripts/cookies.json")
+    data, err := ioutil.ReadFile("/tmp/cookies.json")
     if err != nil {
         return nil, err
     }
@@ -69,9 +69,9 @@ func CheckCookieExpiry(cookieName string) (bool) {
     if cookie.Name == cookieName {
       expiryTime := time.Unix(cookie.Expiry, 0)
       if time.Now().Before(expiryTime) {
-        return true
-      } else {
         return false
+      } else {
+        return true
       }
     }
   }

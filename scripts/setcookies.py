@@ -15,6 +15,8 @@ def gen_driver():
         chrome_options.add_argument("--window-size=1920,1080")
         chrome_options.add_argument(f"--user-agent={user_agent}")
         chrome_options.add_argument("--headless=new")
+        chrome_options.add_argument("--no-sandbox")
+        chrome_options.add_argument("--disable-dev-shm-usage")
         chrome_options.add_experimental_option("prefs", {
             "profile.default_content_setting_values.popups": 1,  # Allow pop-ups
             "profile.default_content_setting_values.cookies": 1, 
@@ -32,7 +34,7 @@ def main():
     driver = gen_driver()  # Initialize the driver using your function
     try:
         time.sleep(2)
-        location = "./scripts/cookies.json"
+        location = "/tmp/cookies.json"
 
         driver.get('https://youtube.com')
         time.sleep(2)
@@ -42,10 +44,13 @@ def main():
         time.sleep(2)
         driver.switch_to.window(driver.window_handles[1])
 
-        time.sleep(5)
+        time.sleep(10)
+        
 
+        print("trying to get cf_clearance cookie...")
         cookies = driver.get_cookie("cf_clearance")
         cookie_list = [cookies] if cookies else []
+        print("generating cookies...")
         with open(location, 'w') as filehandler:
             json.dump(cookie_list, filehandler, indent=4)
 
