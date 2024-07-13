@@ -5,46 +5,91 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"path/filepath"
 	"regexp"
 	"strings"
-  "path/filepath"
-
 
 	"github.com/PuerkitoBio/goquery"
 	"gonchill/prompt"
-	"gonchill/util"
 	"gonchill/scripts"
+	"gonchill/util"
 )
 
+type State struct {
+	URL     string
+	Content string
+	Doc     *goquery.Document
+}
+
 func SearchSeries(query string, option string) {
+	stack := []State{}
+	stack = append(stack, State{URL: buildSearchURL(query), Content: "series"})
 
-  cookiesFilePath := filepath.Join("/tmp", "cookies.json")
-  cookies, err := scripts.ReadCookies(cookiesFilePath)
-  if err != nil {
-    log.Fatalf("Error reading cookies: %s", err)
-  }
+	for len(stack) > 0 {
+		currentState := stack[len(stack)-1]
+		stack = stack[:len(stack)-1]
 
+		switch currentState.Content {
+		case "series":
+			selected_series := getSeries(currentState.URL)
+			if selected_series == "Go Back" {
+				continue
+			} 
+			stack = append(stack, currentState, State{URL: selected_series, Content: "seasons"})
+
+		case "seasons":
+			doc, selected_season := getSeasons(currentState.URL)
+			if selected_season == "Go Back" {
+				continue
+			}
+			stack = append(stack, currentState, State{URL: transformSeason(selected_season), Content: "episodes", Doc: doc})
+
+		case "episodes":
+			selected_episode := getEpisodes(currentState.URL, currentState.Doc)
+			if selected_episode == "Go Back" {
+				continue
+			}
+			stack = append(stack, currentState, State{URL: selected_episode, Content: "magnets"})
+
+		case "magnets":
+			selected_magnet := getMagnets(currentState.URL)
+			if selected_magnet == "Go Back" {
+				continue
+			}
+			util.Watch(selected_magnet, option)
+			return
+		}
+	}
+}
+
+func buildSearchURL(query string) string {
 	encodedQuery := url.QueryEscape(query)
+	return fmt.Sprintf("https://en.rarbg-official.com/series?keyword=%s&genre=&rating=0&order_by=latest", encodedQuery)
+}
 
-	searchURL := fmt.Sprintf("https://en.rarbg-official.com/series?keyword=%s&genre=&rating=0&order_by=latest", encodedQuery)
+func showPrompt(selections []string, content string) string {
+	options := append([]string{"Go Back"}, selections...)
+	return prompt.Selection(options, content)
+}
 
-  client := &http.Client{}
+func getSeries(searchURL string) string {
+	cookiesFilePath := filepath.Join("/tmp", "cookies.json")
+	cookies, _ := scripts.ReadCookies(cookiesFilePath)
 
-  req, err := http.NewRequest("GET", searchURL, nil)
-  if err != nil {
-    log.Fatal(err)
-  }
+	client := &http.Client{}
+	req, err := http.NewRequest("GET", searchURL, nil)
+	if err != nil {
+		log.Fatal(err)
+	}
+	req.Header.Set("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36")
 
-  req.Header.Set("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36")
-
-  for _, cookie := range cookies {
-    req.AddCookie(cookie)
-  }
+	for _, cookie := range cookies {
+		req.AddCookie(cookie)
+	}
 
 	resp, err := client.Do(req)
-
 	if err != nil {
-		log.Fatalf("Error search for this url: %v", err)
+		log.Fatalf("Error fetching series: %v", err)
 	}
 	defer resp.Body.Close()
 
@@ -65,28 +110,32 @@ func SearchSeries(query string, option string) {
 		}
 	})
 
-	selected_series := prompt.Selection(util.RemoveDuplicates(hold), "series")
-	
-  client = &http.Client{}
-  req, err = http.NewRequest("GET", selected_series, nil)
-  if err != nil {
-    log.Fatalf("Failed to create a New Request")
-  }
+	selected_series := showPrompt(util.RemoveDuplicates(hold), "series")
+	return selected_series
+}
 
-  req.Header.Set("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36")
+func getSeasons(selected_series string) (*goquery.Document, string) {
+	cookiesFilePath := filepath.Join("/tmp", "cookies.json")
+	cookies, _ := scripts.ReadCookies(cookiesFilePath)
 
-  for _, cookie := range cookies {
-    req.AddCookie(cookie)
-  }
+	client := &http.Client{}
+	req, err := http.NewRequest("GET", selected_series, nil)
+	if err != nil {
+		log.Fatalf("Failed to create a New Request")
+	}
+	req.Header.Set("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36")
 
-  resp, err = client.Do(req)
+	for _, cookie := range cookies {
+		req.AddCookie(cookie)
+	}
 
+	resp, err := client.Do(req)
 	if err != nil {
 		log.Fatalf("Unable to search selected series: %s", selected_series)
 	}
 	defer resp.Body.Close()
 
-	doc, err = goquery.NewDocumentFromReader(resp.Body)
+	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
 		log.Fatalf("Unable to parse document: %v", err)
 	}
@@ -103,41 +152,46 @@ func SearchSeries(query string, option string) {
 		})
 	})
 
-	selected_season := prompt.Selection(util.RemoveDuplicates(seasons), "seasons")
+	selected_season := showPrompt(util.RemoveDuplicates(seasons), "seasons")
+	return doc, selected_season
+}
 
+func getEpisodes(selected_season string, doc *goquery.Document) string {
 	var episodes []string
-	doc.Find("a[href]").Each(func(i int, s *goquery.Selection){
+	doc.Find("a[href]").Each(func(i int, s *goquery.Selection) {
 		href, exists := s.Attr("href")
-		if exists && strings.Contains(href, transformSeason(selected_season)){
+		if exists && strings.Contains(href, transformSeason(selected_season)) {
 			episodes = append(episodes, href)
-
 		}
 	})
 
+	selected_episode := showPrompt(util.RemoveDuplicates(episodes), "episodes")
+	return selected_episode
+}
 
-	selected_episode := prompt.Selection(util.RemoveDuplicates(episodes), "episodes")
+func getMagnets(selected_episode string) string {
+	cookiesFilePath := filepath.Join("/tmp", "cookies.json")
+	cookies, _ := scripts.ReadCookies(cookiesFilePath)
+	client := &http.Client{}
+	req, err := http.NewRequest("GET", selected_episode, nil)
+	if err != nil {
+		log.Fatalf("Failed to create a New Request")
+	}
+	req.Header.Set("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36")
 
-  client = &http.Client{}
-  req, err = http.NewRequest("GET", selected_episode, nil)
-  if err != nil {
-    log.Fatalf("Failed to create a New Request")
-  }
+	for _, cookie := range cookies {
+		req.AddCookie(cookie)
+	}
 
-  req.Header.Set("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36")
-
-  for _, cookie := range cookies {
-    req.AddCookie(cookie)
-  }
-
-  resp, err = client.Do(req)
+	resp, err := client.Do(req)
 	if err != nil {
 		log.Fatalf("Unable to fetch episode: %v", err)
 	}
 	defer resp.Body.Close()
 
-	doc, err = goquery.NewDocumentFromReader(resp.Body)
+	doc, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
-		log.Fatalf("Unable to parse html: %v", err)
+		log.Fatalf("Unable to parse HTML: %v", err)
 	}
 
 	var magnetLinks []string
@@ -150,13 +204,11 @@ func SearchSeries(query string, option string) {
 		}
 	})
 
-	selected_magnet := prompt.Selection(util.RemoveDuplicates(magnetLinks), "magnets")
-	util.Watch(selected_magnet, option)
-
+	selected_magnet := showPrompt(util.RemoveDuplicates(magnetLinks), "magnets")
+	return selected_magnet
 }
 
 func transformSeason(season string) string {
-
 	lowercase := strings.ToLower(season)
 	result := strings.Replace(lowercase, " ", "-", 1)
 

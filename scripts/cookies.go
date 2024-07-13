@@ -67,11 +67,13 @@ func CheckCookieExpiry(cookieName string) (bool) {
   }
   for _, cookie := range cookies {
     if cookie.Name == cookieName {
-      expiryTime := time.Unix(cookie.Expiry, 0)
-      if time.Now().Before(expiryTime) {
-        return false
-      } else {
+      expiryTime := time.Unix(cookie.Expiry, 0).AddDate(-1, 0, 0).Unix()
+      expiryTimeAfter30Mins := time.Unix(expiryTime, 0).Add(30 * time.Minute)
+
+      if time.Now().After(expiryTimeAfter30Mins) {
         return true
+      } else {
+        return false
       }
     }
   }
