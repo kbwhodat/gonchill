@@ -1,19 +1,13 @@
 { lib, ...}:
 self: super:
 {
-
   gonchill = super.buildGoModule rec {
     pname = "gonchill";
     version = "1.0.6";
 
-    src = super.fetchFromGitHub {
-      owner = "kbwhodat";
-      repo = "gonchill";
-      rev = "v${version}";
-      hash = "sha256-Gjw1dRrgM8D3G7v6WIM2+50r4HmTXvx0Xxme2fH9TlQ=";
-    };
+    src = ./.;
 
-    vendorHash = null;
+    vendorSha256 = null;
 
     meta = {
       description = "What whatever you want...";
