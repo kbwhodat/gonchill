@@ -7,7 +7,7 @@ self: super:
 
     src = ./.;
 
-    vendorSha256 = null;
+    vendorSha256 = "f11c215ec98a4665603b28b6c064948cf42435b48fe5386020046b75ca242e8b";
 
     meta = {
       description = "What whatever you want...";
