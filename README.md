@@ -21,11 +21,17 @@ pip install -r requirements.txt
 ```
 
 ## How to Install
-##### Arch Linux
+#### Arch Linux
 1. ```yay -S gonchill```
 
 #### From Source
 1. ```git clone https://github.com/kbwhodat/gonchill.git```
+
+#### NixOS
+Getting this installed requires a few more steps.
+1. Python packages need to be installed, [here](https://github.com/kbwhodat/configs/blob/main/nix-config/common/packages/packages.nix#L55-L82) is how you can do it.
+2. In your `flake.nix`, `undetected-chromedriver` and `gonchill` overlays need to be used. [Here](https://github.com/kbwhodat/configs/blob/main/nix-config/flake.nix#L23-L36) is how you can make that happen.
+3. Then finally, install the `gonchill` [package](https://github.com/kbwhodat/configs/blob/main/nix-config/common/packages/packages.nix#L6), and now you should be good to go.
 
 
 ## How to use
