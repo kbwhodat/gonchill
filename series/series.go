@@ -195,7 +195,7 @@ func getMagnets(selected_episode string) string {
 	}
 
 	var magnetLinks []string
-	pattern := regexp.MustCompile(`magnet:\?xt=urn:btih:[a-zA-Z0-9]*`)
+	pattern := regexp.MustCompile(`magnet:\?xt=urn:btih:[a-zA-Z0-9].*`)
 	doc.Find("a[href]").Each(func(i int, s *goquery.Selection) {
 		href, exists := s.Attr("href")
 		if exists && pattern.MatchString(href) {
@@ -208,6 +208,7 @@ func getMagnets(selected_episode string) string {
 	return selected_magnet
 }
 
+// Makes sure to use season-0 for Specials
 func transformSeason(season string) string {
 	lowercase := strings.ToLower(season)
 	result := strings.Replace(lowercase, " ", "-", 1)

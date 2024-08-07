@@ -126,7 +126,7 @@ func getMagnets(selected_movie string, cookies []*http.Cookie) string {
 	}
 
 	var magnetLinks []string
-	pattern := regexp.MustCompile(`magnet:\?xt=urn:btih:[a-zA-Z0-9]*`)
+	pattern := regexp.MustCompile(`magnet:\?xt=urn:btih:[a-zA-Z0-9].*`)
 	doc.Find("a[href]").Each(func(i int, s *goquery.Selection) {
 		href, exists := s.Attr("href")
 		if exists && pattern.MatchString(href) {
