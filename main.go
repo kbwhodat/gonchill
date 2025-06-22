@@ -50,7 +50,7 @@ func executePythonTask(script string) {
 
 func main() {
   if len(os.Args) < 3 {
-    fmt.Println("Usage: go run . movies|series [Options] \"search query\"")
+    fmt.Println("Usage: gonchill movies|series [Options] \"search query\"")
     fmt.Println("Options: -v: To use vlc ")
     fmt.Println("         -m: To use mpv ")
     return

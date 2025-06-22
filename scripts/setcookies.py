@@ -9,7 +9,7 @@ def gen_driver():
     try:
         profile = profiles.Windows()
         chrome_options = webdriver.ChromeOptions()
-        user_agent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+        user_agent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36"
 
         chrome_options.add_argument("--start-maximized")
         chrome_options.add_argument("--window-size=1920,1080")
@@ -38,10 +38,16 @@ def main():
 
         driver.get('https://youtube.com')
         time.sleep(2)
-        driver.execute_script("window.open('https://en.rarbg-official.com/episodes/true-detective-2014-season-4-episode-1','_blank');")
+        driver.execute_script("window.open('', '_blank');")
+        time.sleep(10)
+
+        driver.switch_to.window(driver.window_handles[-1])
+        time.sleep(1)
+
+        driver.execute_script("window.location.href = 'https://en.rarbg-official.com/episodes/true-detective-2014-season-4-episode-1';")
 
 
-        time.sleep(2)
+        time.sleep(8)
         driver.switch_to.window(driver.window_handles[1])
 
         time.sleep(10)
