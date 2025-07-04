@@ -5,7 +5,7 @@ self: super: {
 
     src = ./.;
 
-    vendorHash = "sha256-Ov++3fC39zPv0CPZvneE0slc5jAewhr917xIggR5jms=";
+    vendorHash = "sha256-/9JDYnHfn4do1LZf3jVcGdoJ9W9s3uugCNRa+x+tpyE=";
 
     meta = with super.lib; {
       description = "Watch whatever you want...";
