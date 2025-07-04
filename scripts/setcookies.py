@@ -44,13 +44,29 @@ def main():
         driver.switch_to.window(driver.window_handles[-1])
         time.sleep(1)
 
+        user_agent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36"
+        driver.execute_cdp_cmd('Network.setUserAgentOverride', {
+        "userAgent": user_agent,
+        "platform": "Linux",
+        "acceptLanguage": "en-US,en;q=0.9",
+        "userAgentMetadata": {
+            "brands": [{"brand": "Chromium", "version": "137"}, {"brand": "Not-A.Brand", "version": "99"}],
+            "fullVersion": "137.0.0.0",
+            "platform": "Linux",
+            "platformVersion": "5.10",
+            "architecture": "x86",
+            "model": "",
+            "mobile": False
+        }
+    })
+
         driver.execute_script("window.location.href = 'https://en.rarbg-official.com/episodes/true-detective-2014-season-4-episode-1';")
 
 
         time.sleep(8)
         driver.switch_to.window(driver.window_handles[1])
 
-        time.sleep(10)
+        time.sleep(2)
         
 
         print("trying to get cf_clearance cookie...")

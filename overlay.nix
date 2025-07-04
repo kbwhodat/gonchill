@@ -1,11 +1,11 @@
 self: super: {
   gonchill = super.buildGoModule rec {
     pname = "gonchill";
-    version = "1.0.6";
+    version = "1.0.10";
 
     src = ./.;
 
-    vendorHash = "sha256-/9JDYnHfn4do1LZf3jVcGdoJ9W9s3uugCNRa+x+tpyE=";
+    vendorHash = "sha256-Ov++3fC39zPv0CPZvneE0slc5jAewhr917xIggR5jms=";
 
     meta = with super.lib; {
       description = "Watch whatever you want...";
