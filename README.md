@@ -1,9 +1,9 @@
 
-# Go And Chill - Your Go-To GO CLI Torrent Streamer 🚀
+# Go And Chill (gonchill)
 _________________________________________________________
 
 
-Welcome to `gonchill`! Dive into the world of instant streaming with the speed of light. Built with ❤️ in Go, `gonchill` lets you stream your favorite content directly via torrents, without the wait. Whether it's movies, series, or shows, `gonchill` brings them to you swiftly, because who likes waiting anyway?
+If you want to watch things just use this. Use a VPN first if your ISP are annoying...
 
 ![](images/output.gif)
 
