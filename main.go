@@ -58,6 +58,7 @@ func main() {
 
   category := os.Args[1]
   option := os.Args[2]
+  // Fix: strings.join should be strings.Join (capital J) - Go function names are case-sensitive
   query := strings.Join(os.Args[3:], " ")
 
   _, err := os.Stat("/tmp/cookies.json")

@@ -1,7 +1,6 @@
 from selenium_profiles.webdriver import Chrome
 from selenium_profiles.profiles import profiles
 from seleniumwire import webdriver
-import os
 import json
 import time
 
@@ -19,7 +18,7 @@ def gen_driver():
         chrome_options.add_argument("--disable-dev-shm-usage")
         chrome_options.add_experimental_option("prefs", {
             "profile.default_content_setting_values.popups": 1,  # Allow pop-ups
-            "profile.default_content_setting_values.cookies": 1, 
+            "profile.default_content_setting_values.cookies": 1,
             "profile.cookie_controls_mode": 0,
             "profile.block_third_party_cookies": False,
         })
@@ -44,7 +43,7 @@ def main():
         driver.switch_to.window(driver.window_handles[-1])
         time.sleep(1)
 
-        user_agent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36"
+        # user_agent = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36"
         driver.execute_cdp_cmd('Network.setUserAgentOverride', {
         "userAgent": user_agent,
         "platform": "Linux",
@@ -67,7 +66,7 @@ def main():
         driver.switch_to.window(driver.window_handles[1])
 
         time.sleep(2)
-        
+
 
         print("trying to get cf_clearance cookie...")
         cookies = driver.get_cookie("cf_clearance")
@@ -76,10 +75,9 @@ def main():
         with open(location, 'w') as filehandler:
             json.dump(cookie_list, filehandler, indent=4)
 
-            
+
     except Exception as e:
         print("Error in Driver: ",e)
 
 if __name__ == "__main__":
     main()
-

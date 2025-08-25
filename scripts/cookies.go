@@ -4,9 +4,9 @@ import (
   "encoding/json"
   "net/http"
   "fmt"
-  "io/ioutil"
   "log"
   "time"
+  "os"
 )
 
 type Cookie struct {
@@ -22,7 +22,7 @@ type Cookie struct {
 
 
 func ReadCookies(filePath string) ([]*http.Cookie, error) {
-	data, err := ioutil.ReadFile(filePath)
+	data, err := os.ReadFile(filePath)
 	if err != nil {
 		return nil, fmt.Errorf("failed to read file: %v", err)
 	}
@@ -49,7 +49,7 @@ func ReadCookies(filePath string) ([]*http.Cookie, error) {
 
 func readCookiesFromFile() ([]Cookie, error) {
     var cookies []Cookie
-    data, err := ioutil.ReadFile("/tmp/cookies.json")
+    data, err := os.ReadFile("/tmp/cookies.json")
     if err != nil {
         return nil, err
     }
