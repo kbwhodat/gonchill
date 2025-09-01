@@ -10,14 +10,17 @@ import (
 )
 
 type Cookie struct {
-    Domain   string `json:"domain"`
-    Name     string `json:"name"`
-    Value    string `json:"value"`
-    Path     string `json:"path"`
-    HttpOnly bool   `json:"httpOnly"`
-    Secure   bool   `json:"secure"`
-    SameSite string `json:"sameSite"`
-    Expiry   int64  `json:"expiry"`
+    Domain     string  `json:"domain"`
+    Name       string  `json:"name"`
+    Value      string  `json:"value"`
+    Path       string  `json:"path"`
+    HttpOnly   bool    `json:"httpOnly"`
+    Secure     bool    `json:"secure"`
+    SameSite   string  `json:"sameSite"`
+    Expires    float64 `json:"expires"`
+    Size       int64   `json:"size"`
+    Priority   string  `json:"priority"`
+    SourcePort int64   `json:"sourcePort"`
 }
 
 
@@ -67,8 +70,7 @@ func CheckCookieExpiry(cookieName string) (bool) {
   }
   for _, cookie := range cookies {
     if cookie.Name == cookieName {
-      expiryTime := time.Unix(cookie.Expiry, 0).AddDate(-1, 0, 0).Unix()
-      log.Println(expiryTime)
+      expiryTime := time.Unix(int64(cookie.Expires), 0).AddDate(-1, 0, 0).Unix()
       expiryTimeAfter30Mins := time.Unix(expiryTime, 0).Add(30 * time.Minute)
 
       if time.Now().After(expiryTimeAfter30Mins) {

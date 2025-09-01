@@ -1,6 +1,12 @@
-requests
 websockets
-git+https://github.com/kbwhodat/Selenium-Profiles.git
-setuptools
-blinker==1.7.0
-distutils
+numpy
+aiofiles
+matplotlib
+scipy
+platformdirs
+aiohttp
+jsondiff
+orjson
+selenium
+selenium-driverless==1.9.4
+cdp-socket==1.2.8
