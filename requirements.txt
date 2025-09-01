@@ -1,6 +1,6 @@
 requests
 websockets
-selenium-profiles
+git+https://github.com/kbwhodat/Selenium-Profiles.git
 setuptools
 blinker==1.7.0
 distutils
