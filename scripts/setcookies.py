@@ -9,7 +9,7 @@ async def main():
     chrome_options.add_argument("--start-maximized")
     chrome_options.add_argument("--window-size=1920,1080")
     chrome_options.add_argument("--headless=new")
-    # chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-dev-shm-usage")
     chrome_options.add_experimental_option("prefs", {
         "profile.default_content_setting_values.popups": 1,  # Allow pop-ups
