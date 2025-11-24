@@ -19,13 +19,13 @@ func Selection(selections []string, content string) string {
 
     switch content {
     case "episodes":
-        prefix = "https://en.rarbg-official.com/episodes/"
+        prefix = "https://en.rarbg-official.is/episodes/"
     case "seasons":
-        prefix = "https://en.rarbg-official.com/seasons/"
+        prefix = "https://en.rarbg-official.is/seasons/"
     case "series":
-        prefix = "https://en.rarbg-official.com/series/"
+        prefix = "https://en.rarbg-official.is/series/"
     case "movies":
-        prefix = "https://en.rarbg-official.com/movies/"
+        prefix = "https://en.rarbg-official.is/movies/"
     }
 
     for _, option := range options {

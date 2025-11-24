@@ -23,7 +23,7 @@ async def main():
 
     async with webdriver.Chrome(options=chrome_options) as driver:
 
-        await driver.get('https://en.rarbg-official.com/episodes/true-detective-2014-season-4-episode-1', wait_load=True)
+        await driver.get('https://en.rarbg-official.is/series', wait_load=True)
         await driver.sleep(0.5)
         await driver.wait_for_cdp("Page.domContentEventFired", timeout=15)
         await driver.sleep(5)

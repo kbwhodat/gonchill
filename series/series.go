@@ -21,7 +21,7 @@ type State struct {
 	Doc     *goquery.Document
 }
 
-var userAgent string = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36"
+var userAgent string = "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36"
 
 func SearchSeries(query string, option string) {
 	stack := []State{}
@@ -66,7 +66,7 @@ func SearchSeries(query string, option string) {
 
 func buildSearchURL(query string) string {
 	encodedQuery := url.QueryEscape(query)
-	return fmt.Sprintf("https://en.rarbg-official.com/series?keyword=%s&genre=&rating=0&order_by=latest", encodedQuery)
+	return fmt.Sprintf("https://en.rarbg-official.is/series?keyword=%s&genre=&rating=0&order_by=latest", encodedQuery)
 }
 
 func showPrompt(selections []string, content string) string {
@@ -107,7 +107,7 @@ func getSeries(searchURL string) string {
 	var hold []string
 	doc.Find("a[href]").Each(func(i int, s *goquery.Selection) {
 		href, exists := s.Attr("href")
-		if exists && strings.Contains(href, "https://en.rarbg-official.com/series/") {
+		if exists && strings.Contains(href, "https://en.rarbg-official.is/series/") {
 			hold = append(hold, href)
 		}
 	})
